@@ -37,7 +37,7 @@ patches:
               - name: ENABLE_TRACING
                 value: "1"
               - name: ENABLE_PROFILER
-                value: "1"
+                value: "0"
 # currencyservice - tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -57,7 +57,7 @@ patches:
               - name: ENABLE_TRACING
                 value: "1"
               - name: DISABLE_PROFILER
-                $patch: delete
+                value: "1"
 # emailservice - tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -77,7 +77,7 @@ patches:
               - name: ENABLE_TRACING
                 value: "1"
               - name: DISABLE_PROFILER
-                $patch: delete
+                value: "1"
 # frontend - tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -97,7 +97,7 @@ patches:
               - name: OTEL_SERVICE_NAME
                 value: "frontend"
               - name: ENABLE_PROFILER
-                value: "1"
+                value: "0"
 # paymentservice - tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -117,7 +117,7 @@ patches:
               - name: ENABLE_TRACING
                 value: "1"
               - name: DISABLE_PROFILER
-                $patch: delete
+                value: "1"
 # productcatalogservice - tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -157,7 +157,7 @@ patches:
               - name: ENABLE_TRACING
                 value: "1"
               - name: DISABLE_PROFILER
-                $patch: delete
+                value: "1"
 # shippingservice - stats, tracing, profiler
 - patch: |-
     apiVersion: apps/v1
@@ -171,4 +171,4 @@ patches:
             - name: server
               env:
               - name: DISABLE_PROFILER
-                $patch: delete
+                value: "1"
