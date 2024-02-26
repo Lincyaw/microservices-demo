@@ -72,6 +72,8 @@ spec:
         volumeMounts:
         - name: collector-gateway-config
           mountPath: /conf
+        - name: tempdata
+          mountPath: /tmp
       volumes:
       # Simple ConfigMap volume with template file
       - name: collector-gateway-config-template
@@ -82,6 +84,9 @@ spec:
           name: collector-gateway-config-template
       # Create a volume to store the expanded template (with correct cloud project ID)
       - name: collector-gateway-config
+        emptyDir: {}
+      # create a dir for saving the tracing data
+      - name: tempdata
         emptyDir: {}
 ---
 apiVersion: v1
@@ -108,19 +113,23 @@ data:
   collector-gateway-config-template.yaml: |
     receivers:
       otlp:
-        protocols: 
+        protocols:
           grpc:
-    processors:
+          http:
     exporters:
-      googlecloud:
-        project: {{PROJECT_ID}}
+      prometheus:
+        endpoint: "prometheus:9190"
+      file/traces:
+        path: /tmp/traces.json
+      file/metrics:
+        path: /tmp/metrics.json
+      file/logs:
+        path: /tmp/logs.json
     service:
       pipelines:
         traces:
-          receivers: [otlp] # Receive otlp-formatted data from other collector instances
-          processors: []
-          exporters: [googlecloud] # Export traces directly to Google Cloud
+          receivers: [otlp]
+          exporters: [file/traces]
         metrics:
           receivers: [otlp]
-          processors: []
-          exporters: [googlecloud] # Export metrics to Google Cloud
+          exporters: [prometheus]
