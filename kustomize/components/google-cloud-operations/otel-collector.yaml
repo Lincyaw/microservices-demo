@@ -87,7 +87,8 @@ spec:
         emptyDir: {}
       # create a dir for saving the tracing data
       - name: tempdata
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: obdata
 ---
 apiVersion: v1
 kind: Service
@@ -133,3 +134,14 @@ data:
         metrics:
           receivers: [otlp]
           exporters: [prometheus]
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obdata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
