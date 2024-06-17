@@ -47,7 +47,8 @@ build:
   - image: adservice
     context: src/adservice
   tagPolicy:
-    gitCommit: {}
+    envTemplate:
+      template: "latest11"
   local:
     useBuildkit: false
 manifests:
