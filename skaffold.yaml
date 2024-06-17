@@ -47,8 +47,7 @@ build:
   - image: adservice
     context: src/adservice
   tagPolicy:
-    envTemplate:
-      template: "latest11"
+    gitCommit: {}
   local:
     useBuildkit: false
 manifests:
@@ -103,6 +102,8 @@ build:
   artifacts:
   - image: loadgenerator
     context: src/loadgenerator
+  tagPolicy:
+    gitCommit: {}
 manifests:
   rawYaml:
   - ./kubernetes-manifests/loadgenerator.yaml
